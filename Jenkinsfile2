@@ -35,8 +35,9 @@ pipeline {
                                         sh 'docker tag c6a1-183-87-250-107.ngrok-free.app/tomcat:alpine tomcat:alpine'
                                         sh 'docker rmi c6a1-183-87-250-107.ngrok-free.app/tomcat:alpine'
                                         sh '''
-                                                ver="echo ${mvnPom.version}"
-                                                docker build -t c117-183-87-250-107.ngrok-free.app/demoapp:$ver .
+                                                ver=$(echo ${mvnPom.version})"
+                                                echo "$ver"
+                                                //docker build -t c117-183-87-250-107.ngrok-free.app/demoapp:$ver .
                                            '''
                                         sh 'docker rmi tomcat:alpine'
                                 }
