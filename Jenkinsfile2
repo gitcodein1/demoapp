@@ -38,7 +38,7 @@ pipeline {
                         steps {
                                 script {
                                         def mvnPom = readMavenPom file: 'pom.xml'
-                                        sh 'docker build -t c117-183-87-250-107.ngrok-free.app/demoapp:"${mvnPom.version}"'
+                                        sh 'docker build -t c117-183-87-250-107.ngrok-free.app/demoapp:"${mvnPom.version}" . '
                                 }
                         }
                 }
