@@ -37,8 +37,14 @@ pipeline {
                 stage("Build Image") {
                         steps {
                                 script {
-                                        def version = sh script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
-                                        sh 'echo "VERSION: $ver"'
+                                        sh '''
+                                        MVN_VERSION=$(mvn -q \
+                                                -Dexec.executable=echo \
+                                                -Dexec.args='${project.version}' \
+                                                --non-recursive \
+                                                exec:exec)
+                                        echo "MVN VERSION: $MVN_VERSION"
+                                        '''
                                 }
                         }
                 }
