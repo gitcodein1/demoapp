@@ -1,7 +1,7 @@
 //def nexusRepo = mvnPom.version.endsWith("SNAPSHOT") ? "demo-maven-snapshot-repo" : "demo-maven-release-repo"
 //def pom_version = sh script: 'mvn -f pom.xml -DskipTests help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true;
 def fetchVersion() {
-   def mvnPom = readMavenPom file: 'pom.xml' 
+   readMavenPom file: 'pom.xml' 
 }
 pipeline {
     agent {
@@ -15,7 +15,7 @@ pipeline {
                     //def mvnPom = readMavenPom file: 'pom.xml'
                     //def nexusRepo = mvnPom.version.endsWith("SNAPSHOT") ? "demo-maven-snapshot-repo" : "demo-maven-release-repo"
                     //def pom_version = sh script: 'mvn -f pom.xml -DskipTests help:evaluate -Dexpression=project.version -q -DforceStdout'
-                    echo "CALL1: ${fetchVersion.mvnPom.version}"
+                    echo "CALL1: ${fetchVersion.version}"
                     //echo "docker build -t demoapp:${mvnPom.version} ."
                 }
             }
