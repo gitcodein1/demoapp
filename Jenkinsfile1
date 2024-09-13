@@ -8,10 +8,11 @@ pipeline {
         stage("Check Version") {
             steps {
                 script {
-                    //def mvnPom = readMavenPom file: 'pom.xml'
+                    def mvnPom = readMavenPom file: 'pom.xml'
                     //def nexusRepo = mvnPom.version.endsWith("SNAPSHOT") ? "demo-maven-snapshot-repo" : "demo-maven-release-repo"
-                    def pom_version = sh script: 'mvn -f pom.xml -DskipTests help:evaluate -Dexpression=project.version -q -DforceStdout'
-                    echo "CALL1: ${pom_version}"
+                    //def pom_version = sh script: 'mvn -f pom.xml -DskipTests help:evaluate -Dexpression=project.version -q -DforceStdout'
+                    echo "CALL1: ${mvnPom.version}"
+                    echo "docker build -t demoapp:${mvnPom.versio} ."
                 }
             }
         }
