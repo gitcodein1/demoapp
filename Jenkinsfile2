@@ -8,7 +8,7 @@ pipeline {
         stages {
                 stage("Build") {
                         steps {
-                                sh 'mvn -s settings.xml build'
+                                sh 'mvn -s settings.xml package'
                         }
                 }
                 stage("Upload Artifact") {
