@@ -12,5 +12,10 @@ pipeline {
                 }
             }
         }
+        stage("NEW") {
+            steps {
+                echo "${mvnPom.version}"
+            }
+        }
     }
 }
