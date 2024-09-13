@@ -1,5 +1,5 @@
 //def nexusRepo = mvnPom.version.endsWith("SNAPSHOT") ? "demo-maven-snapshot-repo" : "demo-maven-release-repo"
-
+def pom_version = sh script: 'mvn -f pom.xml -DskipTests help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true;
 pipeline {
     agent {
         label 'node1'
@@ -8,20 +8,20 @@ pipeline {
         stage("Check Version") {
             steps {
                 script {
-                    def mvnPom = readMavenPom file: 'pom.xml'
+                    //def mvnPom = readMavenPom file: 'pom.xml'
                     //def nexusRepo = mvnPom.version.endsWith("SNAPSHOT") ? "demo-maven-snapshot-repo" : "demo-maven-release-repo"
-                    echo "CALL1: ${mvnPom.version}"
+                    echo "CALL1: ${pom_version}"
                 }
             }
         }
-        stage("NEW") {
+        /*stage("NEW") {
             steps {
                 script {
                     def mvnPom = readMavenPom file: 'pom.xml'
                     echo "CALL2: ${mvnPom.version}"
                 }
             }
-        }
+        }*/
     }
     post {
         always {
