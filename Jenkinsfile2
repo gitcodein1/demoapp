@@ -38,7 +38,7 @@ pipeline {
                         steps {
                                 script {
                                         def mvnPom = readMavenPom file: 'pom.xml'
-                                        echo "${mvnPom.version}"
+                                        sh 'echo "${mvnPom.version}"'
                                 }
                         }
                 }
