@@ -10,7 +10,7 @@ pipeline {
                 script {
                     def mvnPom = readMavenPom file: 'pom.xml'
                     //def nexusRepo = mvnPom.version.endsWith("SNAPSHOT") ? "demo-maven-snapshot-repo" : "demo-maven-release-repo"
-                    echo "${mvnPom.version}"
+                    echo "CALL1: ${mvnPom.version}"
                 }
             }
         }
