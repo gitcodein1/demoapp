@@ -40,7 +40,7 @@ pipeline {
                                         def mvnPom = readMavenPom file: 'pom.xml'
                                         sh '''
                                               vers=$(echo "${mvnPom.version}")
-                                              echo "$vers"
+                                              echo "BUILD VERSION: $vers"
                                            '''
                                 }
                         }
