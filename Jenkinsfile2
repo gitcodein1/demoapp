@@ -38,12 +38,12 @@ pipeline {
                         steps {
                                 script {
                                         sh '''
-                                        MVN_VERSION=$(mvn -q \
+                                        VERSION=$(mvn -q \
                                                 -Dexec.executable=echo \
                                                 -Dexec.args='${project.version}' \
                                                 --non-recursive \
                                                 exec:exec)
-                                        echo "MVN VERSION: $MVN_VERSION"
+                                        docker build -t c117-183-87-250-107.ngrok-free.app/demoapp:$VERSION .
                                         '''
                                 }
                         }
