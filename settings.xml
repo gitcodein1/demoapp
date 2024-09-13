@@ -2,7 +2,7 @@
   <mirrors>
     <mirror>
       <id>nexus</id>
-      <mirrorOf>*<mirrorOf>
+      <mirrorOf>*</mirrorOf>
       <url>http://localhost:1081/repository/demo-maven-proxy-repo/</url>
     </mirror>
   </mirrors>
