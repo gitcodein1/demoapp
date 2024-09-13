@@ -14,7 +14,7 @@ pipeline {
         }
         stage("NEW") {
             steps {
-                echo "${mvnPom.version}"
+                echo "CALL2: ${mvnPom.version}"
             }
         }
     }
