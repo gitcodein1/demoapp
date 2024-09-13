@@ -31,10 +31,10 @@ pipeline {
                         steps {
                                 script {
                                         def mvnPom = readMavenPom file: 'pom.xml'
-                                        sh 'docker pull bee2-183-87-250-107.ngrok-free.ap/tomcat:alpine'
-                                        sh 'docker tag bee2-183-87-250-107.ngrok-free.ap/tomcat:alpine tomcat:alpine'
-                                        sh 'docker rmi bee2-183-87-250-107.ngrok-free.ap/tomcat:alpine'
-                                        sh 'docker build -t 0790-183-87-250-107.ngrok-free.app/demoapp:${mvnPom.version} .'
+                                        sh 'docker pull bee2-183-87-250-107.ngrok-free.app/tomcat:alpine'
+                                        sh 'docker tag bee2-183-87-250-107.ngrok-free.app/tomcat:alpine tomcat:alpine'
+                                        sh 'docker rmi bee2-183-87-250-107.ngrok-free.app/tomcat:alpine'
+                                        sh 'docker build -t f406-183-87-250-107.ngrok-free.app/demoapp:${mvnPom.version} .'
                                         sh 'docker rmi tomcat:alpine'
                                 }
                         }
