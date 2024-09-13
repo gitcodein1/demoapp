@@ -1,3 +1,6 @@
+def mvnPom = readMavenPom file: 'pom.xml'
+//def nexusRepo = mvnPom.version.endsWith("SNAPSHOT") ? "demo-maven-snapshot-repo" : "demo-maven-release-repo"
+
 pipeline {
     agent {
         label 'node1'
@@ -5,11 +8,12 @@ pipeline {
     stages {
         stage("Check Version") {
             steps {
-                script {
+                /*script {
                     def mvnPom = readMavenPom file: 'pom.xml'
                     def nexusRepo = mvnPom.version.endsWith("SNAPSHOT") ? "demo-maven-snapshot-repo" : "demo-maven-release-repo"
                     echo "${mvnPom.version}"
-                }
+                }*/
+                echo "CALL1: ${mvnPom.version}"
             }
         }
         stage("NEW") {
