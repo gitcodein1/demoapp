@@ -34,7 +34,10 @@ pipeline {
                                         sh 'docker pull c6a1-183-87-250-107.ngrok-free.app/tomcat:alpine'
                                         sh 'docker tag c6a1-183-87-250-107.ngrok-free.app/tomcat:alpine tomcat:alpine'
                                         sh 'docker rmi c6a1-183-87-250-107.ngrok-free.app/tomcat:alpine'
-                                        sh "docker build -t c117-183-87-250-107.ngrok-free.app/demoapp:${mvnPom.version} ."
+                                        sh '''
+                                                ver="echo ${mvnPom.version}"
+                                                docker build -t c117-183-87-250-107.ngrok-free.app/demoapp:$ver .
+                                           '''
                                         sh 'docker rmi tomcat:alpine'
                                 }
                         }
