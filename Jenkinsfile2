@@ -19,7 +19,7 @@ pipeline {
                                         nexusArtifactUploader artifacts: [[artifactId: 'demo-app', classifier: '', file: "target/demo-app-${mvnPom.version}.war", type: 'war']],
                                                               credentialsId: 'nexuscred',
                                                               groupId: 'com.demo', 
-                                                              nexusUrl: '172.17.0.2:8081',
+                                                              nexusUrl: '172.17.0.3:8081',
                                                               nexusVersion: 'nexus3',
                                                               protocol: 'http', 
                                                               repository: nexusRepo, 
