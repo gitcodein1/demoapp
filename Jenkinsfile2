@@ -30,7 +30,12 @@ pipeline {
     }
     stage("DOCKER BUILD") {
       steps {
-        sh 'docker pull bee2-183-87-250-107.ngrok-free.ap/tomcat'
+        script {
+          def mvnPom = readMavenPom file: 'pom.xml'
+          sh 'docker pull bee2-183-87-250-107.ngrok-free.ap/tomcat:alpine'
+          sh 'docker tag bee2-183-87-250-107.ngrok-free.ap/tomcat:alpine tomcat:alpine'
+          sh 'docker build -t 0790-183-87-250-107.ngrok-free.app/demoapp:${mvnPom.version}'
+        }
       }
     }
 }
