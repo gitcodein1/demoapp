@@ -1,5 +1,5 @@
 //def nexusRepo = mvnPom.version.endsWith("SNAPSHOT") ? "demo-maven-snapshot-repo" : "demo-maven-release-repo"
-def pom_version = sh script: 'mvn -f pom.xml -DskipTests help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true;
+//def pom_version = sh script: 'mvn -f pom.xml -DskipTests help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true;
 pipeline {
     agent {
         label 'node1'
@@ -10,6 +10,7 @@ pipeline {
                 script {
                     //def mvnPom = readMavenPom file: 'pom.xml'
                     //def nexusRepo = mvnPom.version.endsWith("SNAPSHOT") ? "demo-maven-snapshot-repo" : "demo-maven-release-repo"
+                    def pom_version = sh script: 'mvn -f pom.xml -DskipTests help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true;
                     echo "CALL1: ${pom_version}"
                 }
             }
