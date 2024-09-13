@@ -1,0 +1,34 @@
+pipeline {
+  agent {
+    label 'node2'
+  }
+  tools {
+    maven 'mvn3'
+  }
+  stages {
+    stage("Build") {
+      sh 'mvn build'
+    }
+  }
+  stage("Upload Artifact") {
+            steps {
+                script {
+                    def mvnPom = readMavenPom file: 'pom.xml'
+                    def nexusRepo = mvnPom.version.endsWith("SNAPSHOT") ? "demo-maven-snapshot-hosted-repo" : "demo-maven-release-hosted-repo"
+                    
+                    nexusArtifactUploader artifacts: [[
+                                                        artifactId: 'simple-app', 
+                                                        classifier: '', 
+                                                        file: "target/simple-app-${mvnPom.version}.war", 
+                                                        type: 'war'
+                                                     ]], 
+                                                    
+                                                    credentialsId: 'nexuscred', 
+                                                    groupId: 'in.javahome', 
+                                                    nexusUrl: '172.17.0.2:8081', 
+                                                    nexusVersion: 'nexus3', 
+                                                    protocol: 'http', 
+                                                    repository: nexusRepo, 
+                                                    version: "${mvnPom.version}"
+                }
+}
