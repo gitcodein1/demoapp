@@ -17,6 +17,7 @@ pipeline {
         stage("NEW") {
             steps {
                 script {
+                    def mvnPom = readMavenPom file: 'pom.xml'
                     echo "CALL2: ${mvnPom.version}"
                 }
             }
