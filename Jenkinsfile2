@@ -9,12 +9,12 @@ pipeline {
         DOCKERHUB_CREDENTIALS= credentials('dockercreds')     
     }
     stages {
-        stage("Build") {
+        stage("Maven Build") {
             steps {
                 sh 'mvn -s settings.xml package'
             }
         }
-        stage("Upload Artifact") {
+        stage("Upload Maven Artifact") {
             steps { 
                 script {
                     def mvnPom = readMavenPom file: 'pom.xml'
@@ -30,13 +30,7 @@ pipeline {
                 }
             }
         }
-        stage("PULL IMAGE") {
-            steps {
-                sh 'docker pull ecf8-183-87-250-107.ngrok-free.app/tomcat:alpine'
-                sh 'docker tag ecf8-183-87-250-107.ngrok-free.app/tomcat:alpine tomcat:alpine'
-            }
-        }
-        stage("Build Image") {
+        stage("Build And Push Docker Image") {
             steps {
                 script {
                     sh '''
@@ -46,22 +40,19 @@ pipeline {
                         --non-recursive \
                         exec:exec)
                         
+                        echo "Pull Base Image From Proxy Repo"
+                        docker pull ecf8-183-87-250-107.ngrok-free.app/tomcat:alpine
+
+                        echo "Tag the Pulled Image"
+                        docker tag ecf8-183-87-250-107.ngrok-free.app/tomcat:alpine tomcat:alpine
+                        
+                        echo "Build Image"
                         docker build -t b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION .
-                        '''
-                }
-            }
-        }
-        stage("Push Image") {
-            steps {
-                script {
-                    sh '''
-                        VERSION=$(mvn -q \
-                        -Dexec.executable=echo \
-                        -Dexec.args='${project.version}' \
-                        --non-recursive \
-                        exec:exec)
-                        
+
+                        echo "Login To Docker Registry"
                         echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin b16a-183-87-250-107.ngrok-free.app
+                        
+                        echo "Push the Build Image"
                         docker push b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION
                         '''
                 }
@@ -76,7 +67,7 @@ pipeline {
                         -Dexec.args='${project.version}' \
                         --non-recursive \
                         exec:exec)
-                docker rmi b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION tomcat:alpine
+                docker rmi b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION ecf8-183-87-250-107.ngrok-free.app/tomcat:alpine tomcat:alpine
                 docker logout
             '''
         }
