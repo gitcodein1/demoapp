@@ -5,7 +5,31 @@ pipeline {
     tools {
         maven 'maven3'
     }
+    environment {     
+        DOCKERHUB_CREDENTIALS= credentials('dockercreds')     
+    }
     stages {
+        stage("Maven Build") {
+            steps {
+                sh 'mvn -s settings.xml package'
+            }
+        }
+        stage("Upload Maven Artifact") {
+            steps {
+                script {
+                    def mvnPom = readMavenPom file: 'pom.xml'
+                    def nexusRepo = mvnPom.version.endsWith("SNAPSHOT") ? "demo-maven-snapshot-hosted-repo" : "demo-maven-release-hosted-repo"              
+                    nexusArtifactUploader artifacts: [[artifactId: 'demo-app', classifier: '', file: "target/demo-app-${mvnPom.version}.war", type: 'war']],
+                                                        credentialsId: 'nexuscred',
+                                                        groupId: 'com.demo', 
+                                                        nexusUrl: 'localhost:1081',
+                                                        nexusVersion: 'nexus3',
+                                                        protocol: 'http', 
+                                                        repository: nexusRepo, 
+                                                        version: "${mvnPom.version}"
+                }
+            }
+        }
         stage("Choose Repo Based on Version Type") {
             steps {
                 sh 'bash script.sh'
