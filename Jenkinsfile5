@@ -19,7 +19,7 @@ pipeline {
                 script {
                     def mvnPom = readMavenPom file: 'pom.xml'
                     def nexusRepo = mvnPom.version.endsWith("SNAPSHOT") ? "demo-maven-snapshot-hosted-repo" : "demo-maven-release-hosted-repo"              
-                    nexusArtifactUploader artifacts: [[artifactId: '${mvnPom.artifactId}', 
+                    nexusArtifactUploader artifacts: [[artifactId: "${mvnPom.artifactId}", 
                                                        classifier: '', 
                                                        file: "target/${mvnPom.artifactId}-${mvnPom.version}.${mvnPom.packaging}", 
                                                        type: "${mvnPom.packaging}"]], 
