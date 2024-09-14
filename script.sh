@@ -11,11 +11,12 @@ release_repo="21d6-183-87-250-107.ngrok-free.app"
 
 
 
-echo "Pull Base Image From Proxy Repo"
+echo "**Pull Base Image From Proxy Repo**"
 docker pull $proxy_repo/tomcat:alpine
-
-echo "Tag the Pulled Image"
+echo
+echo "**Tag the Pulled Image**"
 docker tag $proxy_repo/tomcat:alpine tomcat:alpine
+echo
 
 if [[ $VERSION =~ ^[0-9]+.[0-9]+.[0-9]+-SNAPSHOT ]]
 then
@@ -63,3 +64,4 @@ echo
 echo ">> Clean UP <<"
 echo "--------------"
 docker rmi $proxy_repo/tomcat:alpine tomcat:alpine
+echo
