@@ -62,7 +62,7 @@ pipeline {
                         --non-recursive \
                         exec:exec)
                         
-                        echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin b16a-183-87-250-107.ngrok-free.app
+                        echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin b16a-183-87-250-107.ngrok-free.app
                         docker push b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION
                         '''
                 }
