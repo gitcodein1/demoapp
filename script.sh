@@ -5,42 +5,61 @@ VERSION=$(mvn -q \
         --non-recursive \
         exec:exec)
 
+proxy_repo="ecf8-183-87-250-107.ngrok-free.app"
+snapshot_repo="b16a-183-87-250-107.ngrok-free.app"
+release_repo="21d6-183-87-250-107.ngrok-free.app"
+
+
+
 echo "Pull Base Image From Proxy Repo"
-docker pull ecf8-183-87-250-107.ngrok-free.app/tomcat:alpine
+docker pull $proxy_repo/tomcat:alpine
 
 echo "Tag the Pulled Image"
-docker tag ecf8-183-87-250-107.ngrok-free.app/tomcat:alpine tomcat:alpine
+docker tag $proxy_repo/tomcat:alpine tomcat:alpine
 
 if [[ $VERSION =~ ^[0-9]+.[0-9]+.[0-9]+-SNAPSHOT ]]
 then
-    echo "SNAPSHOT REPO SELECTED"
-
-    echo "Build Image"
-    docker build -t b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION .
-
-    echo "Login To Docker Registry"
-    echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin b16a-183-87-250-107.ngrok-free.app
-    
-    echo "Push Docker Image"
-    docker push b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION
-
-    echo "Remove Image"
-    docker rmi b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION
+    echo "--------------------------"
+    echo "* SNAPSHOT REPO SELECTED *"
+    echo "--------------------------"
+    echo ">> Build Image <<"
+    echo "-----------------"
+    docker build -t $snapshot_repo/demoapp:$VERSION .
+    echo
+    echo ">>Login To Docker Registry..."
+    echo "-----------------------------"
+    echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin $snapshot_repo
+    echo
+    echo ">> Push Docker Image <<"
+    echo "-----------------------"
+    docker push $snapshot_repo/demoapp:$VERSION
+    echo
+    echo ">> Remove Image <<"
+    echo "------------------"
+    docker rmi $snapshot_repo/demoapp:$VERSION
 
 else
-    echo "RELEASE REPO SELECTED"
-
-    echo "Build Image"
-    docker build -t 21d6-183-87-250-107.ngrok-free.app/demoapp:$VERSION .
-
-    echo "Login To Docker Registry"
-    echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin 21d6-183-87-250-107.ngrok-free.app
-
-    echo "Push Docker Image"
-    docker push 21d6-183-87-250-107.ngrok-free.app/demoapp:$VERSION
-
-    echo "Remove Image"
-    docker rmi 21d6-183-87-250-107.ngrok-free.app/demoapp:$VERSION
+    echo "-------------------------"
+    echo "* RELEASE REPO SELECTED *"
+    echo "-------------------------"
+    echo ">> Build Image <<"
+    echo "-----------------"
+    docker build -t $release_repo/demoapp:$VERSION .
+    echo
+    echo ">> Login To Docker Registry <<"
+    echo "-------------------------------"
+    echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin $release_repo
+    echo
+    echo ">> Push Docker Image <<"
+    echo "-----------------------"
+    docker push $release_repo/demoapp:$VERSION
+    echo
+    echo ">> Remove Image <<"
+    echo "------------------"
+    docker rmi $release_repo/demoapp:$VERSION
 fi
 
-docker rmi ecf8-183-87-250-107.ngrok-free.app/tomcat:alpine tomcat:alpine
+echo
+echo ">> Clean UP <<"
+echo "--------------"
+docker rmi $proxy_repo/tomcat:alpine tomcat:alpine
