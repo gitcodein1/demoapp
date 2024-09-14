@@ -10,7 +10,7 @@ pipeline {
                     echo "VERSION: ${mvnPom.version}"
                     echo "ARTIFACT: ${mvnPom.artifactId}"
                     echo "GROUP: ${mvnPom.groupId}"
-                    echo "TYPE: ${mvnPom.package}"
+                    echo "TYPE: ${mvnPom.packaging}"
                 }
             }
         }
