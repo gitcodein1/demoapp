@@ -60,7 +60,7 @@ pipeline {
                                                 -Dexec.args='${project.version}' \
                                                 --non-recursive \
                                                 exec:exec)
-                                        echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin b16a-183-87-250-107.ngrok-free.app
+                                        docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW b16a-183-87-250-107.ngrok-free.app
                                         docker push b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION
                                         '''
                                 }
