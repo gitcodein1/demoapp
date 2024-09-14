@@ -47,11 +47,12 @@ pipeline {
                                                 --non-recursive \
                                                 exec:exec)
                                         docker build -t b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION .
+                                        docker push b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION
                                         '''
                                 }
                         }
                 }
-                stage("Push Image") {
+                /*stage("Push Image") {
                         steps {
                                 script {
                                         sh '''
@@ -65,7 +66,7 @@ pipeline {
                                         '''
                                 }
                         }
-                }
+                }*/
         }
         post {
                 always {
