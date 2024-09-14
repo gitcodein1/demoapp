@@ -5,6 +5,9 @@ pipeline {
         tools {
                 maven 'maven3'
         }
+        environment {     
+            DOCKERHUB_CREDENTIALS= credentials('dockercreds')     
+        } 
         stages {
                 stage("Build") {
                         steps {
@@ -29,9 +32,9 @@ pipeline {
                 }
                 stage("PULL IMAGE") {
                         steps {
-                                sh 'docker pull c6a1-183-87-250-107.ngrok-free.app/tomcat:alpine'
-                                sh 'docker tag c6a1-183-87-250-107.ngrok-free.app/tomcat:alpine tomcat:alpine'
-                                sh 'docker rmi c6a1-183-87-250-107.ngrok-free.app/tomcat:alpine'
+                                sh 'docker pull ecf8-183-87-250-107.ngrok-free.app/tomcat:alpine'
+                                sh 'docker tag ecf8-183-87-250-107.ngrok-free.app/tomcat:alpine tomcat:alpine'
+                                sh 'docker rmi ecf8-183-87-250-107.ngrok-free.app/tomcat:alpine'
                         }
                 }
                 stage("Build Image") {
@@ -43,10 +46,30 @@ pipeline {
                                                 -Dexec.args='${project.version}' \
                                                 --non-recursive \
                                                 exec:exec)
-                                        docker build -t c117-183-87-250-107.ngrok-free.app/demoapp:$VERSION .
+                                        docker build -t b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION .
                                         '''
                                 }
                         }
+                }
+                stage("Push Image") {
+                        steps {
+                                script {
+                                        sh '''
+                                        VERSION=$(mvn -q \
+                                                -Dexec.executable=echo \
+                                                -Dexec.args='${project.version}' \
+                                                --non-recursive \
+                                                exec:exec)
+                                        echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                                        docker push b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION
+                                        '''
+                                }
+                        }
+                }
+        }
+        post {
+                always {
+                        sh 'docker logout'
                 }
         }
 }
