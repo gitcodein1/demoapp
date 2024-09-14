@@ -53,6 +53,22 @@ pipeline {
                 }
             }
         }
+        stage("Push Image") {
+            steps {
+                script {
+                    sh '''
+                        VERSION=$(mvn -q \
+                        -Dexec.executable=echo \
+                        -Dexec.args='${project.version}' \
+                        --non-recursive \
+                        exec:exec)
+                        
+                        docker login -u admin -p admin1234 b16a-183-87-250-107.ngrok-free.app
+                        docker push b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION
+                        '''
+                }
+            }
+        }
     }
     post {
         always {
