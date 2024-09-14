@@ -1,0 +1,15 @@
+pipeline {
+    agent {
+        label 'node2'
+    }
+    stages {
+        stage("CHECK ELEMENTS") {
+            steps {
+                script {
+                    def mvnPom = readMavenPom file: 'pom.xml'
+                    echo "VERSION: ${mvnPom.version}"
+                }
+            }
+        }
+    }
+}
