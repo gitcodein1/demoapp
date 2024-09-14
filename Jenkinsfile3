@@ -30,7 +30,7 @@ pipeline {
                 }
             }
         }
-        stage("Choose Repo Based on Version Type") {
+        stage("Docker Image Build and Push") {
             steps {
                 sh 'bash script.sh'
             }
