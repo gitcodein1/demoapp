@@ -62,7 +62,7 @@ pipeline {
                         --non-recursive \
                         exec:exec)
                         
-                        echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin b16a-183-87-250-107.ngrok-free.app
+                        echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin b16a-183-87-250-107.ngrok-free.app
                         docker push b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION
                         '''
                 }
@@ -71,7 +71,15 @@ pipeline {
     }
     post {
         always {
-            sh 'docker logout'
+            sh '''
+                VERSION=$(mvn -q \
+                        -Dexec.executable=echo \
+                        -Dexec.args='${project.version}' \
+                        --non-recursive \
+                        exec:exec)
+                docker rmi b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION ecf8-183-87-250-107.ngrok-free.app/demoapp:$VERSION tomcat:alpine
+                docker logout
+            '''
         }
     }
 }
