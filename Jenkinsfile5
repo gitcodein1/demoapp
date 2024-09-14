@@ -21,15 +21,15 @@ pipeline {
                     def nexusRepo = mvnPom.version.endsWith("SNAPSHOT") ? "demo-maven-snapshot-hosted-repo" : "demo-maven-release-hosted-repo"              
                     nexusArtifactUploader artifacts: [[artifactId: '${mvnPom.artifactId}', 
                                                        classifier: '', 
-                                                       file: 'target/${mvnPom.artifactId}-${mvnPom.version}.${mvnPom.packaging}', 
-                                                       type: '${mvnPom.packaging}']], 
+                                                       file: "target/${mvnPom.artifactId}-${mvnPom.version}.${mvnPom.packaging}", 
+                                                       type: "${mvnPom.packaging}"]], 
                                                        credentialsId: 'nexuscred', 
-                                                       groupId: '${mvnPom.groupId}', 
+                                                       groupId: "${mvnPom.groupId}", 
                                                        nexusUrl: 'localhost:1081', 
                                                        nexusVersion: 'nexus3', 
                                                        protocol: 'http', 
-                                                       repository: 'nexusRepo', 
-                                                       version: '${mvnPom.version}'
+                                                       repository: nexusRepo, 
+                                                       version: "${mvnPom.version}"
                 }
             }
         }
