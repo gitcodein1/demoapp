@@ -76,7 +76,7 @@ pipeline {
                         -Dexec.args='${project.version}' \
                         --non-recursive \
                         exec:exec)
-                docker rmi b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION ecf8-183-87-250-107.ngrok-free.app/demoapp:$VERSION tomcat:alpine
+                docker rmi b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION tomcat:alpine
                 docker logout
             '''
         }
