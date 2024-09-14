@@ -9,6 +9,8 @@ pipeline {
                     def mvnPom = readMavenPom file: 'pom.xml'
                     echo "VERSION: ${mvnPom.version}"
                     echo "ARTIFACT: ${mvnPom.artifactId}"
+                    echo "GROUP: ${mvnPom.groupId}"
+                    echo "TYPE: ${mvnPom.package}"
                 }
             }
         }
