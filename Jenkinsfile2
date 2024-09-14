@@ -1,76 +1,62 @@
 pipeline {
-        agent {
-                label 'node2'
+    agent {
+        label 'node2'
+    }
+    tools {
+        maven 'maven3'
+    }
+    // environment {     
+    //     DOCKERHUB_CREDENTIALS= credentials('dockercreds')     
+    // } 
+    stages {
+        stage("Build") {
+            steps {
+                sh 'mvn -s settings.xml package'
+            }
         }
-        tools {
-                maven 'maven3'
+        stage("Upload Artifact") {
+            steps { 
+                script {
+                    def mvnPom = readMavenPom file: 'pom.xml'
+                    def nexusRepo = mvnPom.version.endsWith("SNAPSHOT") ? "demo-maven-snapshot-hosted-repo" : "demo-maven-release-hosted-repo"              
+                    nexusArtifactUploader artifacts: [[artifactId: 'demo-app', classifier: '', file: "target/demo-app-${mvnPom.version}.war", type: 'war']],
+                                                        credentialsId: 'nexuscred',
+                                                        groupId: 'com.demo', 
+                                                        nexusUrl: 'localhost:1081',
+                                                        nexusVersion: 'nexus3',
+                                                        protocol: 'http', 
+                                                        repository: nexusRepo, 
+                                                        version: "${mvnPom.version}"
+                }
+            }
         }
-        environment {     
-            DOCKERHUB_CREDENTIALS= credentials('dockercreds')     
-        } 
-        stages {
-                stage("Build") {
-                        steps {
-                                sh 'mvn -s settings.xml package'
-                        }
-                }
-                stage("Upload Artifact") {
-                        steps { 
-                                script {
-                                        def mvnPom = readMavenPom file: 'pom.xml'
-                                        def nexusRepo = mvnPom.version.endsWith("SNAPSHOT") ? "demo-maven-snapshot-hosted-repo" : "demo-maven-release-hosted-repo"              
-                                        nexusArtifactUploader artifacts: [[artifactId: 'demo-app', classifier: '', file: "target/demo-app-${mvnPom.version}.war", type: 'war']],
-                                                              credentialsId: 'nexuscred',
-                                                              groupId: 'com.demo', 
-                                                              nexusUrl: 'localhost:1081',
-                                                              nexusVersion: 'nexus3',
-                                                              protocol: 'http', 
-                                                              repository: nexusRepo, 
-                                                              version: "${mvnPom.version}"
-                                }
-                        }
-                }
-                stage("PULL IMAGE") {
-                        steps {
-                                sh 'docker pull ecf8-183-87-250-107.ngrok-free.app/tomcat:alpine'
-                                sh 'docker tag ecf8-183-87-250-107.ngrok-free.app/tomcat:alpine tomcat:alpine'
-                                sh 'docker rmi ecf8-183-87-250-107.ngrok-free.app/tomcat:alpine'
-                        }
-                }
-                stage("Build Image") {
-                        steps {
-                                script {
-                                        sh '''
-                                        VERSION=$(mvn -q \
-                                                -Dexec.executable=echo \
-                                                -Dexec.args='${project.version}' \
-                                                --non-recursive \
-                                                exec:exec)
-                                        docker build -t b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION .
-                                        docker push b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION
-                                        '''
-                                }
-                        }
-                }
-                /*stage("Push Image") {
-                        steps {
-                                script {
-                                        sh '''
-                                        VERSION=$(mvn -q \
-                                                -Dexec.executable=echo \
-                                                -Dexec.args='${project.version}' \
-                                                --non-recursive \
-                                                exec:exec)
-                                        //docker login -u admin -p admin1234 b16a-183-87-250-107.ngrok-free.app
-                                        docker push b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION
-                                        '''
-                                }
-                        }
-                }*/
+        stage("PULL IMAGE") {
+            steps {
+                sh 'docker pull ecf8-183-87-250-107.ngrok-free.app/tomcat:alpine'
+                sh 'docker tag ecf8-183-87-250-107.ngrok-free.app/tomcat:alpine tomcat:alpine'
+                sh 'docker rmi ecf8-183-87-250-107.ngrok-free.app/tomcat:alpine'
+            }
         }
-        post {
-                always {
-                        sh 'docker logout'
+        stage("Build Image") {
+            steps {
+                script {
+                    sh '''
+                        VERSION=$(mvn -q \
+                        -Dexec.executable=echo \
+                        -Dexec.args='${project.version}' \
+                        --non-recursive \
+                        exec:exec)
+                        
+                        docker build -t b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION .
+                        docker push b16a-183-87-250-107.ngrok-free.app/demoapp:$VERSION
+                        '''
                 }
+            }
         }
+    }
+    post {
+        always {
+            sh 'docker logout'
+        }
+    }
 }
