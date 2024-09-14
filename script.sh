@@ -5,9 +5,9 @@ VERSION=$(mvn -q \
         --non-recursive \
         exec:exec)
 
-proxy_repo="ecf8-183-87-250-107.ngrok-free.app"
-snapshot_repo="b16a-183-87-250-107.ngrok-free.app"
-release_repo="21d6-183-87-250-107.ngrok-free.app"
+proxy_repo="80c6-183-87-250-107.ngrok-free.app"
+snapshot_repo="a0cd-183-87-250-107.ngrok-free.app"
+release_repo="60de-183-87-250-107.ngrok-free.app"
 
 
 
