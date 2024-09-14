@@ -34,7 +34,6 @@ pipeline {
             steps {
                 sh 'docker pull ecf8-183-87-250-107.ngrok-free.app/tomcat:alpine'
                 sh 'docker tag ecf8-183-87-250-107.ngrok-free.app/tomcat:alpine tomcat:alpine'
-                sh 'docker rmi ecf8-183-87-250-107.ngrok-free.app/tomcat:alpine'
             }
         }
         stage("Build Image") {
