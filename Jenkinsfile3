@@ -10,6 +10,7 @@ pipeline {
             steps {
                 script {
                     sh '''
+                        #!bin/bash
                         VERSION=$(mvn -q \
                         -Dexec.executable=echo \
                         -Dexec.args='${project.version}' \
