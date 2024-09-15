@@ -5,9 +5,9 @@ pipeline {
     tools {
         maven 'maven3'
     }
-    environment {     
+    /*environment {     
         DOCKERHUB_CREDENTIALS= credentials('dockercreds')     
-    }
+    }*/
     stages {
         stage("Maven Build") {
             steps {
@@ -18,7 +18,7 @@ pipeline {
             steps {
                 script {
                     def mvnPom = readMavenPom file: 'pom.xml'
-                    def nexusRepo = mvnPom.version.endsWith("SNAPSHOT") ? "demo-maven-snapshot-hosted-repo" : "demo-maven-release-hosted-repo"              
+                    def nexusRepo = mvnPom.version.endsWith("SNAPSHOT") ? "demo-maven-hosted-snapshot" : "demo-maven-hosted-release"              
                     nexusArtifactUploader artifacts: [[artifactId: "${mvnPom.artifactId}", 
                                                        classifier: '', 
                                                        file: "target/${mvnPom.artifactId}-${mvnPom.version}.${mvnPom.packaging}", 
@@ -33,9 +33,18 @@ pipeline {
                 }
             }
         }
-        stage("Docker Image Build and Push") {
+        /*stage("Docker Image Build and Push") {
             steps {
                 sh 'bash script.sh'
+            }
+        }*/
+        stage("Docker Image Build and Push") {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'nexuscred', 
+                                                  passwordVariable: 'pass', 
+                                                  usernameVariable: 'user')]) {
+                    sh 'bash script1.sh'
+                }
             }
         }
     }
