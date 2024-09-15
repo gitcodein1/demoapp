@@ -2,8 +2,8 @@
   <servers>
     <server>
       <id>nexus</id>
-      <username>${secret_USR}</username>
-      <password>${secret_PSW}</password>
+      <username>${env.secret_USR}</username>
+      <password>${env.secret_PSW}</password>
     </server>
   </servers>
   <mirrors>
