@@ -11,7 +11,9 @@ pipeline {
     stages {
         stage("Maven Build") {
             steps {
-                sh 'mvn -s settings.xml package'
+                withCredentials([usernamePassword(credentialsId: 'nexuscred', passwordVariable: 'pass', usernameVariable: 'user')]) {
+                    sh 'mvn -s settings1.xml package'
+                }
             }
         }
         stage("Upload Maven Artifact") {
