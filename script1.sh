@@ -5,9 +5,9 @@ VERSION=$(mvn -q \
         --non-recursive \
         exec:exec)
 
-proxy_repo="afad-183-87-250-107.ngrok-free.app"
-snapshot_repo="9211-183-87-250-107.ngrok-free.app"
-release_repo="f900-183-87-250-107.ngrok-free.app"
+proxy_repo="93fa-183-87-250-107.ngrok-free.app"
+snapshot_repo="f9a0-183-87-250-107.ngrok-free.app"
+release_repo="113a-183-87-250-107.ngrok-free.app"
 
 
 echo $secret_PSW | docker login -u $secret_USR --password-stdin $snapshot_repo
