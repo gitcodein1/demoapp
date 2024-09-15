@@ -10,7 +10,7 @@ snapshot_repo="f9a0-183-87-250-107.ngrok-free.app"
 release_repo="113a-183-87-250-107.ngrok-free.app"
 
 
-echo $secret_PSW | docker login -u $secret_USR --password-stdin $snapshot_repo
+echo $secret_PSW | docker login -u $secret_USR --password-stdin $proxy_repo
 echo "**Pull Base Image From Proxy Repo**"
 docker pull $proxy_repo/tomcat:alpine
 echo
