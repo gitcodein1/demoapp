@@ -5,8 +5,8 @@ VERSION=$(mvn -q \
         --non-recursive \
         exec:exec)
 
-proxy_repo="9211-183-87-250-107.ngrok-free.app"
-snapshot_repo="afad-183-87-250-107.ngrok-free.app"
+proxy_repo="afad-183-87-250-107.ngrok-free.app"
+snapshot_repo="9211-183-87-250-107.ngrok-free.app"
 release_repo="f900-183-87-250-107.ngrok-free.app"
 
 
@@ -17,6 +17,7 @@ echo
 echo "**Tag the Pulled Image**"
 docker tag $proxy_repo/tomcat:alpine tomcat:alpine
 echo
+docker logout
 
 if [[ $VERSION =~ ^[0-9]+.[0-9]+.[0-9]+-SNAPSHOT ]]
 then
