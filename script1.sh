@@ -10,13 +10,14 @@ snapshot_repo="afad-183-87-250-107.ngrok-free.app"
 release_repo="f900-183-87-250-107.ngrok-free.app"
 
 
-
+docker login -u $user -p $pass $proxy_repo
 echo "**Pull Base Image From Proxy Repo**"
 docker pull $proxy_repo/tomcat:alpine
 echo
 echo "**Tag the Pulled Image**"
 docker tag $proxy_repo/tomcat:alpine tomcat:alpine
 echo
+docker logout
 
 if [[ $VERSION =~ ^[0-9]+.[0-9]+.[0-9]+-SNAPSHOT ]]
 then
