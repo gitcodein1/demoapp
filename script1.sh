@@ -10,14 +10,13 @@ snapshot_repo="afad-183-87-250-107.ngrok-free.app"
 release_repo="f900-183-87-250-107.ngrok-free.app"
 
 
-docker login -u $user -p $pass $proxy_repo
+echo $secret_PSW | docker login -u $secret_USR --password-stdin $snapshot_repo
 echo "**Pull Base Image From Proxy Repo**"
 docker pull $proxy_repo/tomcat:alpine
 echo
 echo "**Tag the Pulled Image**"
 docker tag $proxy_repo/tomcat:alpine tomcat:alpine
 echo
-docker logout
 
 if [[ $VERSION =~ ^[0-9]+.[0-9]+.[0-9]+-SNAPSHOT ]]
 then
@@ -30,7 +29,7 @@ then
     echo
     echo ">>Login To Docker Registry..."
     echo "-----------------------------"
-    docker login -u $user -p $pass $snapshot_repo
+    echo $secret_PSW | docker login -u $secret_USR --password-stdin $snapshot_repo
     echo
     echo ">> Push Docker Image <<"
     echo "-----------------------"
@@ -50,7 +49,7 @@ else
     echo
     echo ">> Login To Docker Registry <<"
     echo "-------------------------------"
-    docker login -u $user -p $pass $release_repo_repo
+    echo $secret_PSW | docker login -u $secret_USR --password-stdin $release_repo
     echo
     echo ">> Push Docker Image <<"
     echo "-----------------------"
