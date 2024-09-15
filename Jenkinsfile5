@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage("Maven Build") {
             steps {
-                sh 'mvn -s settings1.xml package'
+                sh 'mvn -s settings2.xml package'
             }
         }
         stage("Upload Maven Artifact") {
