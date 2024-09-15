@@ -5,15 +5,13 @@ pipeline {
     tools {
         maven 'maven3'
     }
-    /*environment {     
-        DOCKERHUB_CREDENTIALS= credentials('dockercreds')     
-    }*/
+    environment {     
+        secret= credentials('nexuscred')     
+    }
     stages {
         stage("Maven Build") {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'nexuscred', passwordVariable: 'pass', usernameVariable: 'user')]) {
-                    sh 'mvn -s settings1.xml package'
-                }
+                sh 'mvn -s settings1.xml package'
             }
         }
         stage("Upload Maven Artifact") {
@@ -35,18 +33,9 @@ pipeline {
                 }
             }
         }
-        /*stage("Docker Image Build and Push") {
-            steps {
-                sh 'bash script.sh'
-            }
-        }*/
         stage("Docker Image Build and Push") {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'nexuscred', 
-                                                  passwordVariable: 'pass', 
-                                                  usernameVariable: 'user')]) {
-                    sh 'bash script1.sh'
-                }
+                sh 'bash script.sh'
             }
         }
     }
