@@ -1,0 +1,16 @@
+<settings>
+  <servers>
+    <server>
+      <id>nexus</id>
+      <username>${user}</username>
+      <password>${pass}</password>
+    </server>
+  </servers>
+  <mirrors>
+    <mirror>
+      <id>nexus</id>
+      <mirrorOf>*</mirrorOf>
+      <url>http://localhost:1081/repository/demo-maven-proxy/</url>
+    </mirror>
+  </mirrors>
+</settings>
