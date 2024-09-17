@@ -6,7 +6,7 @@ pipeline {
   stages {
     stage("MVN BUILD") {
       steps {
-        sh 'mvn -s settings.xml package'
+        sh 'mvn -s settings2.xml package'
         script {
                     def mvnPom = readMavenPom file: 'pom.xml'
                     def nexusRepo = mvnPom.version.endsWith("SNAPSHOT") ? "demo-maven-hosted-snapshot" : "demo-maven-hosted-release"              
