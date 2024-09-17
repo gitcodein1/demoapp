@@ -1,5 +1,7 @@
 pipeline {
-  agent {}
+  agent {
+    label 'docker-node'
+  }
   stages {
     stage("MVN BUILD") {
       steps {
