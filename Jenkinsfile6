@@ -11,11 +11,5 @@ pipeline {
         sh 'pwd'
       }
     }
-    stage("REMOVE IMAGE") {
-      agent { label 'node2'}
-      steps {
-        sh 'docker rmi devopsdock1/mvn-docker'
-      }
-    }
   }
 }
