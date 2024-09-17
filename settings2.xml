@@ -10,7 +10,7 @@
     <mirror>
       <id>nexus</id>
       <mirrorOf>*</mirrorOf>
-      <url>http://5ed2-183-87-250-107.ngrok-free.app/repository/demo-maven-proxy/</url>
+      <url>http://aa89-183-87-250-107.ngrok-free.app/repository/demo-maven-proxy/</url>
     </mirror>
   </mirrors>
 </settings>
