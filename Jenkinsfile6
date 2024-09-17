@@ -5,12 +5,10 @@ pipeline {
       agent {label 'docker-node'}
       steps {
         sh 'mvn package'
-      }
-    }
-    stage("CHECK FILES") {
-      agent {label 'docker-node'}
-      steps {
+        echo ""
+        echo ">>CHECK FILES<<"
         sh 'ls target/'
+        sh 'pwd'
       }
     }
     stage("REMOVE IMAGE") {
