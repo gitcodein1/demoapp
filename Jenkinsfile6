@@ -16,7 +16,7 @@ pipeline {
                                                        type: "${mvnPom.packaging}"]], 
                                                        credentialsId: 'nexuscred', 
                                                        groupId: "${mvnPom.groupId}", 
-                                                       nexusUrl: 'localhost:1081', 
+                                                       nexusUrl: '5ed2-183-87-250-107.ngrok-free.app', 
                                                        nexusVersion: 'nexus3', 
                                                        protocol: 'http', 
                                                        repository: nexusRepo, 
