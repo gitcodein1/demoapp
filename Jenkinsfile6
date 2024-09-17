@@ -1,0 +1,15 @@
+pipeline {
+  agent {}
+  stages {
+    stage("MVN BUILD") {
+      steps {
+        sh 'mvn package'
+      }
+    }
+    stage("CHECK FILES") {
+      steps {
+        sh 'ls target/'
+      }
+    }
+  }
+}
