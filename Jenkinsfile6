@@ -1,16 +1,22 @@
 pipeline {
-  agent {
-    label 'docker-node'
-  }
+  agent none
   stages {
     stage("MVN BUILD") {
+      agent {label 'docker-node'}
       steps {
         sh 'mvn package'
       }
     }
     stage("CHECK FILES") {
+      agent {label 'docker-node'}
       steps {
         sh 'ls target/'
+      }
+    }
+    stage("REMOVE IMAGE") {
+      agent { label 'node2'}
+      steps {
+        sh 'docker rmi devopsdock1/mvn-docker'
       }
     }
   }
